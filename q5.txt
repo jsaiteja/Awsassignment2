@@ -1,0 +1,37 @@
+let the two ec2 instances to set up passwordless SSH be
+34.208.202.82  let this be source server
+18.237.45.152  let this be destination server
+
+1. Generate a ssh key pair in source machine using the command
+
+   ssh-keygen -t rsa
+2. then enter a password and the path to save the public and private keys
+
+3.  Copy the public key to the destination in a file authorized_key
+    in the path /home/ec2-user/.ssh/authorized_keys in 18.237.45.152.
+    
+    The commands used are
+    
+    $ mkdir .ssh
+    $ cd .ssh
+    $ vi authorized_keys
+    $ cd .ssh/
+    $ cat id_rsa.pub
+    
+4.  Set the permissions
+       700(rwx--) to .ssh folder and
+       600(rw--)for authorized_keys file in ssh folder
+ 
+    chmod 700 .ssh/
+    chmod 600 .ssh/authorized_keys
+          
+5.  Connect from source using private key to destination
+      run ssh username@destination
+          ssh ec2-user@18.237.45.152
+
+    
+
+
+
+      
+

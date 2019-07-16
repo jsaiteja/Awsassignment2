@@ -1,0 +1,35 @@
+Step 1: We launch an ubuntu instance with the security group also opening the ports through HTTP
+
+Step 2: startup script
+#!/bin/bash
+sudo yum update 
+sudo yum -y install apache2
+sudo mkdir -p /var/www/html/mywebsite
+sudo chown ubuntu /var/www/
+sudo chmod -R o+r /var/www/
+sudo chown -R 755 /var/www/
+echo "<html><body><h1> This is the first website. </h1></boody></html>" > /var/www/html/mywebsite/index.html
+sudo cp /etc/apache2/sites-available/000-default-conf /etc/apache2/sites-available/mywebsite.config
+
+Step 3: Go to ec2 console,Create an image of this instance.
+Step 4: Go to launch configurations under Auto scaling, and select the configuration
+Step 5: Complete the auto scaling group creation also.
+Step 6: Choose the launch configuration you have created.
+Step 7: Select the group size, the network and the 2 subnet in different availability zones
+Step 8: Click on configure load balancer.
+Step 9: Choose the classic load balancer, assign security gps, provide a certificate, configure health check.
+Step 10: Create a target gp under load balancing.
+Step 11: Go to auto scaling gps and choose your gp and edit it. Here add the load balancer and the target gps that
+we have created.
+
+ listner configuration :
+    The port is set to HTTP and the target group we have created is chosen
+
+ Security group rules:
+    Inboubound rules allow SSH , HTTP
+    Outbound all traffic
+
+
+
+
+

@@ -1,0 +1,64 @@
+import boto3
+ec2 = boto3.resource('ec2', region_name='us-east-1')
+
+# create VPC
+vpc = ec2.create_vpc(CidrBlock='10.0.0.0/16')
+# we can assign a name to vpc, or any resource, by using tag
+
+vpc.wait_until_available()
+print(vpc.id)
+
+# create then attach internet gateway
+ig = ec2.create_internet_gateway()
+vpc.attach_internet_gateway(InternetGatewayId=ig.id)
+print(ig.id)
+
+# create a route table and a public route
+route_table = vpc.create_route_table()
+route = route_table.create_route(
+    DestinationCidrBlock='0.0.0.0/0',
+    GatewayId=ig.id
+)
+print(route_table.id)
+
+# create subnet
+subnet1 = ec2.create_subnet(CidrBlock='10.0.0.0/25', VpcId=vpc.id,AvailabilityZone='us-east-1b')
+print(subnet1.id)
+
+# associate the route table with the subnet
+route_table.associate_with_subnet(SubnetId=subnet1.id)
+
+# create subnet
+subnet2 = ec2.create_subnet(CidrBlock='10.0.0.128/25', VpcId=vpc.id,AvailabilityZone='us-east-1b')
+print(subnet2.id)
+
+
+
+# create subnet
+subnet3 = ec2.create_subnet(CidrBlock='10.0.1.0/25', VpcId=vpc.id,AvailabilityZone='us-east-1a')
+print(subnet3.id)
+
+# associate the route table with the subnet
+route_table.associate_with_subnet(SubnetId=subnet3.id)
+
+# create subnet
+subnet4 = ec2.create_subnet(CidrBlock='10.0.1.128/25', VpcId=vpc.id,AvailabilityZone='us-east-1a')
+print(subnet4.id)
+
+
+# create subnet
+subnet5 = ec2.create_subnet(CidrBlock='10.0.2.0/25', VpcId=vpc.id,AvailabilityZone='us-east-1c')
+print(subnet5.id)
+
+# associate the route table with the subnet
+route_table.associate_with_subnet(SubnetId=subnet5.id)
+
+# create subnet
+subnet6 = ec2.create_subnet(CidrBlock='10.0.2.128/25', VpcId=vpc.id,AvailabilityZone='us-east-1c')
+print(subnet6.id)
+
+
+
+
+
+
